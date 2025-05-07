@@ -81,7 +81,7 @@ def pipeline_func(X_train, X_test, y_train, y_test):
 
 if __name__ == "__main__":
     # main title
-    st.title("LEAD SCORING DASHBOARD")
+    st.markdown("# **LEAD SCORING DASHBOARD**")
 
     # calling the load function
     df = load_func()
@@ -117,10 +117,7 @@ if __name__ == "__main__":
     # ✅ Apply the selected threshold
     y_prediction = (y_probability >= threshold).astype(int)
 
-    # accuracy score display
-    st.divider()
-    st.subheader("Accuracy of Prediction:")
-    st.code(accuracy_score(y_test, y_prediction))
+
     # display lead scores
     lead_scores = (y_probability * 100).round(2)
 
@@ -141,7 +138,7 @@ if __name__ == "__main__":
 
     # columns creation in streamlit
     st.subheader("🔍 Explore Sample & Original Data")
-    st.markdown("Switch between the **two tabs below** to view **random lead scores** and their **original data**.")
+    st.markdown("Switch between the **three tabs below** to view **random lead scores**, their **original data** and their **visualization**.")
     tab1, tab2, tab3 = st.tabs(["LIST OF ALL THE PREDICTED CONVERSIONS", "THE LIST DETAILS", "GRAPHICAL REPRESENTATION"])
 
 
@@ -207,18 +204,21 @@ if __name__ == "__main__":
         st.pyplot(fig, bbox_inches='tight')
 
     # total conversions
-    st.subheader(f"Total predicted conversions for threshold of {threshold}:")
-    st.code(len(converted))
+    st.metric(f"Total predicted conversions for threshold of {threshold}:", len(converted))
 
     # search bar
     st.subheader("🔍Search By Lead Number:")
-    lead_number = st.number_input("Enter the Lead Number")
+    lead_number = st.number_input("Enter the Lead Number", step=1, format="%d")
     if st.button("Search"):
         st.dataframe(df_with_scores[df_with_scores["lead_number"] == lead_number])
     st.divider()
 
     # header for the details
-    st.header("STATISTICAL METRICS:")
+    st.markdown("# STATISTICAL METRICS")
+    st.divider()
+
+    # accuracy score display
+    st.metric("PREDICTION ACCURACY SCORE:", round(accuracy_score(y_test, y_prediction), 4))
 
     # classification report
     st.divider()
@@ -233,7 +233,7 @@ if __name__ == "__main__":
     RocCurveDisplay.from_estimator(model_fit, X_test, y_test, ax=ax)
     ax.set_title("ROC Curve")
     st.pyplot(fig)
-    st.markdown(f"#### ***ROC-AUC Score: {roc_auc_score(y_test, y_probability)}***")
+    st.metric("ROC-AUC Score:", round(roc_auc_score(y_test, y_probability), 4))
 
 
     # confusion matrix
