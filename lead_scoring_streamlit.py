@@ -12,6 +12,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix, classification_report
 from sklearn.metrics import RocCurveDisplay
 
+
 @st.cache_data
 def load_func():
     df_loader = pd.read_csv("Leads.csv")
@@ -41,6 +42,7 @@ def train_test_split_func(X, y):
     return X_train, X_test, y_train, y_test
 
 
+@st.cache_resource
 def pipeline_func(X_train, X_test, y_train, y_test):
     numerical_columns = X_train.select_dtypes(include=["int64", "float64"]).columns.tolist()
     categorical_columns = X_train.select_dtypes(include=["object"]).columns.tolist()
