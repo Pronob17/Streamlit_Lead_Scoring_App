@@ -12,7 +12,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score, confusion_matrix, classification_report
 from sklearn.metrics import RocCurveDisplay
 
-@st.cache
+@st.cache_data
 def load_func():
     df_loader = pd.read_csv("Leads.csv")
     return df_loader
