@@ -82,7 +82,7 @@ def pipeline_func(X_train, X_test, y_train, y_test, seed):
 if __name__ == "__main__":
     # main title
     st.sidebar.markdown("#### **NOTE:** Enter a seed for the app to run.")
-    seed = st.sidebar.number_input("Enter A Random Seed", step=1)
+    seed = st.sidebar.number_input("Enter A Random Seed", step=1, value=17)
     st.markdown("# **LEAD SCORING DASHBOARD**")
 
     # calling the load function
