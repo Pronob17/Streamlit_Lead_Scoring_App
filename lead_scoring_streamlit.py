@@ -36,14 +36,18 @@ def cleaner_func(df_unclean):
     return X, y
 
 
-def train_test_split_func(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=17)
+def train_test_split_func(X, y, seed):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=seed)
 
     return X_train, X_test, y_train, y_test
 
 
+<<<<<<< HEAD
+def pipeline_func(X_train, X_test, y_train, y_test, seed):
+=======
 @st.cache_resource
 def pipeline_func(X_train, X_test, y_train, y_test):
+>>>>>>> d74bfd7265a8b43f041e07e4ee274cf14f4137f4
     numerical_columns = X_train.select_dtypes(include=["int64", "float64"]).columns.tolist()
     categorical_columns = X_train.select_dtypes(include=["object"]).columns.tolist()
 
@@ -68,7 +72,7 @@ def pipeline_func(X_train, X_test, y_train, y_test):
     # model building
     model = Pipeline(steps=[
         ('preprocessor', preprocessor),
-        ('classifier', LogisticRegression(max_iter=1000, random_state=17))
+        ('classifier', LogisticRegression(max_iter=1000, random_state=seed))
     ])
 
     # fit the model
@@ -84,6 +88,7 @@ def pipeline_func(X_train, X_test, y_train, y_test):
 
 if __name__ == "__main__":
     # main title
+    seed = st.sidebar.number_input("Enter A Random Seed", step=1)
     st.markdown("# **LEAD SCORING DASHBOARD**")
 
     # calling the load function
@@ -93,10 +98,10 @@ if __name__ == "__main__":
     X, y = cleaner_func(df)
 
     # calling train-test-split function
-    X_train, X_test, y_train, y_test = train_test_split_func(X, y)
+    X_train, X_test, y_train, y_test = train_test_split_func(X, y, seed)
 
     # pipeline function
-    model_fit, y_prediction, y_probability = pipeline_func(X_train, X_test, y_train, y_test)
+    model_fit, y_prediction, y_probability = pipeline_func(X_train, X_test, y_train, y_test, seed)
 
     # 👇 Sidebar threshold selector
     st.sidebar.subheader("🎯 Choose Lead Scoring Strategy")
